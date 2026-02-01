@@ -42,7 +42,7 @@ def add_data(jp, kr):
 def delete_data(row_index):
     client = init_connection()
     sheet = client.open_by_url(SHEET_URL).sheet1
-    sheet.delete_row(row_index + 2)
+    sheet.delete_rows(row_index + 2)
 
 # 메인 화면 구성
 def main():
