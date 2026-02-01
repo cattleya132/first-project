@@ -2,7 +2,7 @@ import streamlit as st
 import json
 import os
 import random
-
+SHEET_URL = 'https://docs.google.com/spreadsheets/d/1u09CnLBLV8Ny5v0TDaXC7KBDRRx4tmMrh5o6cHR7vQI/edit?gid=0#gid=0'
 # 데이터 파일 이름
 FILE_NAME = "my_japanese_data.json"
 
