@@ -4,7 +4,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import random
 
 # ==========================================
-
+# 👇 [중요] 따옴표("") 안에 본인의 구글 엑셀 주소를 꼭 다시 넣어주세요!
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1u09CnLBLV8Ny5v0TDaXC7KBDRRx4tmMrh5o6cHR7vQI/edit?gid=0#gid=0"
 # ==========================================
 
@@ -91,4 +91,42 @@ def main():
                     # 성공 메시지 띄우기 (rerun을 지워서 메시지가 유지됨)
                     st.success("✅ 구글 엑셀에 저장되었습니다!")
                 else:
-                    st.warning("내
+                    st.warning("내용을 입력해주세요.")
+
+    # --- [목록 관리] ---
+    elif menu == "목록 관리":
+        st.header(f"총 {len(sentences)}개의 문장이 있어요 📂")
+        # 최신 문장이 위로 오게 하려면 아래 줄의 주석을 푸세요
+        # sentences = sentences[::-1] 
+        
+        for idx, item in enumerate(sentences):
+            col1, col2 = st.columns([4, 1])
+            with col1:
+                jp = item.get('일본어') or item.get('jp')
+                kr = item.get('한국어') or item.get('kr')
+                with st.expander(f"🇯🇵 {jp}"):
+                    st.write(f"🇰🇷 뜻: {kr}")
+            with col2:
+                if st.button("삭제", key=f"del_{idx}"):
+                    delete_data(idx)
+                    st.success("삭제되었습니다.")
+                    st.rerun() # 삭제할 때는 목록 갱신을 위해 재부팅 필요
+
+    # --- [랜덤 퀴즈] ---
+    elif menu == "랜덤 퀴즈":
+        st.header("복습 퀴즈 시간! 🧠")
+        if not sentences:
+            st.info("데이터가 없습니다. 문장을 먼저 추가해주세요.")
+        else:
+            if st.button("새 문제 뽑기", type="primary"):
+                quiz = random.choice(sentences)
+                st.session_state['q'] = quiz.get('일본어') or quiz.get('jp')
+                st.session_state['a'] = quiz.get('한국어') or quiz.get('kr')
+            
+            if 'q' in st.session_state:
+                st.subheader(f"Q. {st.session_state['q']}")
+                with st.expander("정답 확인"):
+                    st.write(f"정답: {st.session_state['a']}")
+
+if __name__ == "__main__":
+    main()
