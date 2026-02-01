@@ -45,41 +45,45 @@ def delete_data_from_sheet(row_index):
         sheet.delete_row(target_row)
 
 def main():
-    # 👇 [핵심 수정] 관리자 버튼, 푸터, 헤더, 햄버거 메뉴 싹 다 숨기기 (강력 버전)
+    # 👇 [수정] 마시마로, 왕관, Fork 버튼 등 모든 '관리자 표식'을 제거하는 강력한 코드
     st.markdown("""
         <style>
-        /* 1. 상단 햄버거 메뉴 숨기기 */
-        #MainMenu {visibility: hidden;}
-        
-        /* 2. 하단 'Made with Streamlit' 푸터 숨기기 */
-        footer {visibility: hidden;}
-        
-        /* 3. 상단 헤더 장식 줄 숨기기 */
-        header {visibility: hidden;}
-        
-        /* 4. [중요] 우측 하단 관리자 버튼(왕관/프사) 숨기기 */
+        /* 1. 우측 하단 '마시마로+왕관' 버튼 (가장 중요) */
         div[data-testid="stStatusWidget"] {
-            visibility: hidden;
+            visibility: hidden !important;
             display: none !important;
+            opacity: 0 !important;
         }
-        
-        /* 5. 혹시 모를 툴바 버튼 숨기기 */
+
+        /* 2. 우측 상단 'Fork', 'GitHub' 버튼 */
         div[data-testid="stToolbar"] {
-            visibility: hidden;
+            visibility: hidden !important;
             display: none !important;
         }
 
-        /* 6. 모바일 화면 여백 조정 (메뉴 버튼은 보이게) */
-        .block-container {
-            padding-top: 1rem;
-            padding-bottom: 0rem;
+        /* 3. 상단 헤더 장식 줄 (무지개색) */
+        div[data-testid="stDecoration"] {
+            visibility: hidden !important;
+            display: none !important;
         }
+
+        /* 4. 하단 'Hosted with Streamlit' 푸터 */
+        footer {
+            visibility: hidden !important;
+            display: none !important;
+        }
+        
+        /* 5. (안전장치) 혹시 모를 관리자 버튼 강제 투명화 */
+        .stApp > header {
+            background-color: transparent !important;
+        }
+        
+        /* ⚠️ 왼쪽 위 '화살표(메뉴)'는 살려둡니다! */
         </style>
         """, unsafe_allow_html=True)
     
     st.set_page_config(page_title="나만의 일본어 노트", page_icon="🇯🇵")
     st.title("🇯🇵 나만의 일본어 문장 노트")
-
     if 'sentences' not in st.session_state:
         try:
             st.session_state['sentences'] = load_data()
